@@ -1,5 +1,136 @@
 {% extends "base.html" %}
 
 {% block content %}
-<p>Content goes here</p>
+<div class="page-content container-fluid">
+  <div class="row justify-content-center">
+    <div class="col col-lg-9 col-xxl-7">
+
+      <h2 class="mt-4 mb-4 text-center">🎵 Your Music Stats</h2>
+
+      
+      <div class="d-flex flex-column gap-4">
+
+        
+        <div class="card shadow-sm">
+          <div class="card-body d-flex flex-column flex-md-row align-items-center">
+            <img src="{{ top_song_img }}" alt="Top Song Art" class="img-thumbnail me-3" style="width:100px; height:100px;">
+            <div class="col">
+              <h5 class="card-title">Top Song</h5>
+              <p><strong>Your Pick:</strong> {{ user_top_song }}</p>
+              <p><strong>Spotify Says:</strong> {{ spotify_top_song }}</p>
+              {% if user_top_song.strip().lower() == spotify_top_song.strip().lower() %}
+                <span class="badge bg-success"><i class="bi bi-check-circle"></i> Perfect Match!</span>
+              {% else %}
+                <span class="badge bg-danger"><i class="bi bi-x-circle"></i> No Match</span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="card shadow-sm">
+          <div class="card-body d-flex flex-column flex-md-row align-items-center">
+            <img src="{{ top_album_img }}" alt="Top Album Art" class="img-thumbnail me-3" style="width:100px; height:100px;">
+            <div class="col">
+              <h5 class="card-title">Top Album</h5>
+              <p><strong>Your Pick:</strong> {{ user_top_album }}</p>
+              <p><strong>Spotify Says:</strong> {{ spotify_top_album }}</p>
+              {% if user_top_album.strip().lower() == spotify_top_album.strip().lower() %}
+                <span class="badge bg-success"><i class="bi bi-check-circle"></i> Spot On!</span>
+              {% else %}
+                <span class="badge bg-danger"><i class="bi bi-x-circle"></i> Off the Mark</span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="card shadow-sm">
+          <div class="card-body d-flex flex-column flex-md-row align-items-center">
+            <img src="{{ top_artist_img }}" alt="Top Artist" class="img-thumbnail me-3" style="width:100px; height:100px;">
+            <div class="col">
+              <h5 class="card-title">Most Listened Artist</h5>
+              <p><strong>Your Pick:</strong> {{ user_top_artist }}</p>
+              <p><strong>Spotify Says:</strong> {{ spotify_top_artist }}</p>
+              {% if user_top_artist.strip().lower() == spotify_top_artist.strip().lower() %}
+                <span class="badge bg-success"><i class="bi bi-check-circle"></i> On Point!</span>
+              {% else %}
+                <span class="badge bg-danger"><i class="bi bi-x-circle"></i> Mismatch</span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      
+      <div class="card shadow-sm mt-4">
+        <div class="card-body text-center">
+          <h5 class="card-title">Total Minutes Listened</h5>
+          <p class="display-6">{{ minutes_listened }} mins</p>
+          <p class="text-muted">Keep the tunes rolling! 🎶</p>
+        </div>
+      </div>
+
+      
+      <h4 class="mt-5 mb-3 text-center">Summary for Sharing</h4>
+      <div id="summary-section" class="comparison-table table-responsive mb-4">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Category</th>
+              <th scope="col">Your Input</th>
+              <th scope="col">Spotify Data</th>
+              <th scope="col">Match</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Top Song</td>
+              <td>{{ user_top_song }}</td>
+              <td>{{ spotify_top_song }}</td>
+              <td>
+                {% if user_top_song.strip().lower() == spotify_top_song.strip().lower() %}
+                  <span class="badge bg-success">Match</span>
+                {% else %}
+                  <span class="badge bg-danger">No Match</span>
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <td>Top Album</td>
+              <td>{{ user_top_album }}</td>
+              <td>{{ spotify_top_album }}</td>
+              <td>
+                {% if user_top_album.strip().lower() == spotify_top_album.strip().lower() %}
+                  <span class="badge bg-success">Match</span>
+                {% else %}
+                  <span class="badge bg-danger">No Match</span>
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <td>Most Listened Artist</td>
+              <td>{{ user_top_artist }}</td>
+              <td>{{ spotify_top_artist }}</td>
+              <td>
+                {% if user_top_artist.strip().lower() == spotify_top_artist.strip().lower() %}
+                  <span class="badge bg-success">Match</span>
+                {% else %}
+                  <span class="badge bg-danger">No Match</span>
+                {% endif %}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      
+      <div class="text-center mb-5">
+        <button class="btn btn-primary" onclick="downloadSummary()">📤 Share Summary</button>
+      </div>
+
+    </div>
+  </div>
+</div>
 {% endblock %}

@@ -47,7 +47,17 @@ def scores():
 
 @app.route('/stats')
 def stats():
-  return render_template("stats.html", title="Stats")
+  return render_template("stats.html", title="Stats",\
+  top_song_img = "https://i.scdn.co/image/ab67616d0000485117f77fab7e8f18d5f9fee4a1",\
+  user_top_song = "Lover, You Should've Come Over",\
+  spotify_top_song = "The End.",\
+  top_album_img = "https://i.scdn.co/image/ab67616d0000485117f77fab7e8f18d5f9fee4a1",\
+  user_top_album = "Welcome To The Black Parade",\
+  spotify_top_album = "Welcome To The Black Parade",\
+  top_artist_img = 'https://i.scdn.co/image/ab6761610000f1789c00ad0308287b38b8fdabc2',\
+  user_top_artist = 'My Chemical Romance',\
+  spotify_top_artist = 'Jeff Buckley',\
+  minutes_listened = "100000")
 
 @app.route('/compare_scores')
 def compare_scores():

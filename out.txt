@@ -1,0 +1,91 @@
+(linux_env) ➜  Group-Project git:(bug-free-register/login-feature) ✗ flask run
+ * Serving Flask app 'app.py'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5000
+Press CTRL+C to quit
+127.0.0.1 - - [24/Apr/2025 16:34:08] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [24/Apr/2025 16:34:08] "GET /static/styles.css HTTP/1.1" 304 -
+127.0.0.1 - - [24/Apr/2025 16:34:08] "GET /... HTTP/1.1" 404 -
+127.0.0.1 - - [24/Apr/2025 16:34:08] "GET /static/nav.css HTTP/1.1" 304 -
+127.0.0.1 - - [24/Apr/2025 16:34:08] "GET /static/page_top.css HTTP/1.1" 304 -
+127.0.0.1 - - [24/Apr/2025 16:34:08] "GET /static/item.css HTTP/1.1" 304 -
+127.0.0.1 - - [24/Apr/2025 16:34:11] "GET /login HTTP/1.1" 200 -
+127.0.0.1 - - [24/Apr/2025 16:34:11] "GET /static/styles.css HTTP/1.1" 304 -
+127.0.0.1 - - [24/Apr/2025 16:34:11] "GET /static/nav.css HTTP/1.1" 304 -
+127.0.0.1 - - [24/Apr/2025 16:34:11] "GET /static/item.css HTTP/1.1" 304 -
+127.0.0.1 - - [24/Apr/2025 16:34:11] "GET /static/page_top.css HTTP/1.1" 304 -
+127.0.0.1 - - [24/Apr/2025 16:34:18] "GET /register HTTP/1.1" 200 -
+127.0.0.1 - - [24/Apr/2025 16:34:18] "GET /static/styles.css HTTP/1.1" 304 -
+127.0.0.1 - - [24/Apr/2025 16:34:18] "GET /static/nav.css HTTP/1.1" 304 -
+127.0.0.1 - - [24/Apr/2025 16:34:18] "GET /static/page_top.css HTTP/1.1" 304 -
+127.0.0.1 - - [24/Apr/2025 16:34:18] "GET /static/item.css HTTP/1.1" 304 -
+[2025-04-24 16:34:21,205] ERROR in app: Exception on /validate_user [POST]
+Traceback (most recent call last):
+  File "/home/archerbkey/Documents/CITS3403-Agile-Web-Development/Group-Project/linux_env/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/archerbkey/Documents/CITS3403-Agile-Web-Development/Group-Project/linux_env/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such table: user
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/archerbkey/Documents/CITS3403-Agile-Web-Development/Group-Project/linux_env/lib/python3.12/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/archerbkey/Documents/CITS3403-Agile-Web-Development/Group-Project/linux_env/lib/python3.12/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/archerbkey/Documents/CITS3403-Agile-Web-Development/Group-Project/linux_env/lib/python3.12/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/archerbkey/Documents/CITS3403-Agile-Web-Development/Group-Project/linux_env/lib/python3.12/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/archerbkey/Documents/CITS3403-Agile-Web-Development/Group-Project/app/routes.py", line 141, in validate_user
+    existing_user = User.query.filter_by(username=username).first()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/archerbkey/Documents/CITS3403-Agile-Web-Development/Group-Project/linux_env/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2759, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/archerbkey/Documents/CITS3403-Agile-Web-Development/Group-Project/linux_env/lib/python3.12/site-packages/sqlalchemy/orm/query.py", line 2858, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/archerbkey/Documents/CITS3403-Agile-Web-Development/Group-Project/linux_env/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2365, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/archerbkey/Documents/CITS3403-Agile-Web-Development/Group-Project/linux_env/lib/python3.12/site-packages/sqlalchemy/orm/session.py", line 2251, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/archerbkey/Documents/CITS3403-Agile-Web-Development/Group-Project/linux_env/lib/python3.12/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "/home/archerbkey/Documents/CITS3403-Agile-Web-Development/Group-Project/linux_env/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1416, in execute
+    return meth(
+           ^^^^^
+  File "/home/archerbkey/Documents/CITS3403-Agile-Web-Development/Group-Project/linux_env/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 523, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/archerbkey/Documents/CITS3403-Agile-Web-Development/Group-Project/linux_env/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1638, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/archerbkey/Documents/CITS3403-Agile-Web-Development/Group-Project/linux_env/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1843, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/archerbkey/Documents/CITS3403-Agile-Web-Development/Group-Project/linux_env/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1983, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/home/archerbkey/Documents/CITS3403-Agile-Web-Development/Group-Project/linux_env/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2352, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/archerbkey/Documents/CITS3403-Agile-Web-Development/Group-Project/linux_env/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 1964, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/archerbkey/Documents/CITS3403-Agile-Web-Development/Group-Project/linux_env/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 945, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: user
+[SQL: SELECT user.user_id AS user_user_id, user.username AS user_username, user.email AS user_email, user.password AS user_password, user.img_url AS user_img_url, user.bio AS user_bio, user.name AS user_name
+FROM user
+WHERE user.username = ?
+ LIMIT ? OFFSET ?]
+[parameters: ('a', 1, 0)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+127.0.0.1 - - [24/Apr/2025 16:34:21] "POST /validate_user HTTP/1.1" 500 -
