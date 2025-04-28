@@ -3,13 +3,56 @@
 {% block content %}
 <div class="page-content container-fluid">
   <div class="row justify-content-center">
-    <div class="col col-lg-9 col-xxl-7">
+    <div class="col col-lg-9 col-xxl-6">
 
       <h2 class="mt-4 mb-4 text-center">🎵 Your Music Stats</h2>
 
-      
       <div class="d-flex flex-column gap-4">
+        
+        {% for title, user, streaming in comparisons %}
+        <div class="comparison shadow-sm">
+          <h2 class="comparison-title">{{ title }}</h2>
+          
+          <div class="comparison-item">
+            <div class="comparison-source col-3">
+              <p>Your Pick</p>
+            </div>
+            <div class="item item-lg item-borderless item-type-{{ user.type }} col">
+              <img class="item-img" src="{{ user.img_url }}" alt="">
+              <div class="item-desc">
+                <p class="item-title">{{ user.title }}</p>
+                {% if user.type != 'artist' %}
+                <p class="item-creator">{{ user.creator }}</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+                    
+          <div class="comparison-item">
+            <div class="comparison-source col-3">
+              <p>Spotify Says</p>
+            </div>
+            <div class="item item-lg item-borderless item-type-{{ streaming.type }} col">
+              <img class="item-img" src="{{ streaming.img_url }}" alt="">
+              <div class="item-desc">
+                <p class="item-title">{{ streaming.title }}</p>
+                {% if streaming.type != 'artist' %}
+                <p class="item-creator">{{ streaming.creator }}</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          
+          <div class="comparison-result col-12">
+            {% if user_top_song.strip().lower() == spotify_top_song.strip().lower() %}
+              <span class="comparison-badge badge bg-success"><i class="bi bi-check-circle"></i> Perfect Match!</span>            </div>
+            {% else %}                                                                                                             
+              <span class="comparison-badge badge bg-danger"><i class="bi bi-x-circle"></i> No Match</span>                       
+            {% endif %}                                                                                                            
+          </div>
 
+        </div>
+        {% endfor %}
         
         <div class="card shadow-sm">
           <div class="card-body d-flex flex-column flex-md-row align-items-center">
