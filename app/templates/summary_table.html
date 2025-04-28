@@ -1,0 +1,57 @@
+<h4 class="mt-5 mb-3 text-center">Summary for Sharing</h4>
+      <div id="summary-section" class="comparison-table table-responsive mb-4">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Category</th>
+              <th scope="col">Your Input</th>
+              <th scope="col">Spotify Data</th>
+              <th scope="col">Match</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Top Song</td>
+              <td>{{ user_top_song }}</td>
+              <td>{{ spotify_top_song }}</td>
+              <td>
+                {% if user_top_song.strip().lower() == spotify_top_song.strip().lower() %}
+                  <span class="badge bg-success">Match</span>
+                {% else %}
+                  <span class="badge bg-danger">No Match</span>
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <td>Top Album</td>
+              <td>{{ user_top_album }}</td>
+              <td>{{ spotify_top_album }}</td>
+              <td>
+                {% if user_top_album.strip().lower() == spotify_top_album.strip().lower() %}
+                  <span class="badge bg-success">Match</span>
+                {% else %}
+                  <span class="badge bg-danger">No Match</span>
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <td>Most Listened Artist</td>
+              <td>{{ user_top_artist }}</td>
+              <td>{{ spotify_top_artist }}</td>
+              <td>
+                {% if user_top_artist.strip().lower() == spotify_top_artist.strip().lower() %}
+                  <span class="badge bg-success">Match</span>
+                {% else %}
+                  <span class="badge bg-danger">No Match</span>
+                {% endif %}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      
+      <div class="text-center mb-5">
+        <button class="btn btn-primary" onclick="downloadSummary()">📤 Share Summary</button>
+      </div>
+

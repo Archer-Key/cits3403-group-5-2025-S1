@@ -18,15 +18,16 @@
   width: 100%;
 }
 
-.comparison-source {
+.comparison-subtitle{
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.comparison-source p {
+.comparison-subtitle p {
   font-size: 1.5rem;
   font-weight: 600;
+  text-align: center;
 }
 
 .comparison-badge {
