@@ -61,6 +61,7 @@ function renderItems(response) {
   // We don't want to empty the containers every time, this will be specified in the response
   $("#search-results").empty()
   $("#db-results").empty()
+  $("#placeholders").empty()
 
   renderContainer(search_container, response.search_results);
   renderContainer(db_container, response.db_results);
