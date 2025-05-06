@@ -13,6 +13,8 @@ class User(db.Model):
   bio = db.Column(db.Text)
   name = db.Column(db.String)
   refresh_token = db.Column(db.String)
+  friends = db.relationship('User', secondary = 'Friend', primaryjoin = "User.user_id == Friend.user_id", 
+                            secondaryjoin = "User.user_id == Friend.user_id", backref = "friend_of")
   def __repr__(self):
     return 'user_id={}, username={}, email={}, password={} img_url={} , bio = {}, name = {}'.format(self.user_id, self.username, self.email, self.password, self.img_url, self.bio, self.name, self.refresh_token)
 
