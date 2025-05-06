@@ -6,7 +6,7 @@ from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 from app.auth import auth
-from app.models import User
+from app.models import User, Friend
 from app.util import validate_password, validate_email, validate_score
 from app.item_requests import *
 from urllib.parse import parse_qs
@@ -464,11 +464,77 @@ def delete_account():
     flash('Your account has been deleted. See ya', 'info')
     return redirect(url_for('index'))
 
-@app.route('/friends')
+@app.route('/friends', methods=['GET', 'POST'])
 def friends():
-    ### MISSING SEARCH FRIEND BY LINK FUNCTION
-    your_friend_link = "https://example.com/addfriend/your-unique-link"
+    my_user_id = int(session['user']['id'])
+    search_results = []
+    search_query = ""
+    search_userid = ""
+    friends = (
+        db.session.query(User)
+        .join(Friend, Friend.friend_id == User.user_id)
+        .filter(Friend.user_id == my_user_id)
+        .all()
+    )
+    filtered_friends = friends
+    if request.method == 'POST':
+        # Remove friend
+        if 'remove_friend_id' in request.form:
+            remove_id = int(request.form.get('remove_friend_id'))
+            friend = Friend.query.filter_by(user_id=my_user_id, friend_id=remove_id).first()
+            if friend:
+                db.session.delete(friend)
+                db.session.commit()
+                flash("Friend removed.", "info")
+            return redirect(url_for('friends'))
+
+        # Add/search friend by user id 
+        search_userid = request.form.get('search_userid', '').strip()
+        if search_userid:
+            user = User.query.filter_by(user_id=search_userid).first()
+            if user and user.user_id != my_user_id and not Friend.query.filter_by(user_id=my_user_id, friend_id=user.user_id).first():
+                search_results = [user]
+            else:
+                flash("No such user", "warning")
+        else:
+            # Search friends by name
+            search_query = request.form.get('friend_search_query', '').strip()
+            if search_query:
+                filtered_friends = []
+                for friend in friends: # Checks for all relevant friends names in the friend list for the given search input name
+                    search_lower = search_query.lower()
+                    friend_name = (friend.name or '').lower()
+                    friend_username = (friend.username or '').lower()
+                    if search_lower in friend_name or search_lower in friend_username:
+                       filtered_friends.append(friend)
+            else:
+                filtered_friends = friends
+            # Add friend by user_id
+            friend_user_id = request.form.get('add_friend_id')
+            if friend_user_id:
+                friend_user_id = int(friend_user_id)
+                if friend_user_id == my_user_id:
+                    flash("You cannot add yourself as a friend.", "danger")
+                    return redirect(url_for('friends'))
+                if Friend.query.filter_by(user_id=my_user_id, friend_id=friend_user_id).first():
+                    flash("Friend already added.", "warning")
+                    return redirect(url_for('friends'))
+                if not User.query.get(friend_user_id):
+                    flash("User does not exist.", "danger")
+                    return redirect(url_for('friends'))
+                new_friend = Friend(user_id=my_user_id, friend_id=friend_user_id)
+                db.session.add(new_friend)
+                db.session.commit()
+                flash("Friend added successfully!", "success")
+                return redirect(url_for('friends'))
+    else:
+        filtered_friends = friends
+
     return render_template(
         'friends.html',
-        your_friend_link=your_friend_link,
+        my_user_id=my_user_id,
+        friends=filtered_friends,
+        search_results=search_results,
+        search_query=search_query,
+        search_userid=search_userid
     )
