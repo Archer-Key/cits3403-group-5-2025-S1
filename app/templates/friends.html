@@ -1,76 +1,85 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="container mt-4">
-    <h2>Your Friends</h2>
-    <div class="mb-3">
-        <input type="text" class="form-control" placeholder="Search friends..." id="friend-search">
+<div class="container mt-4" style="max-width:100%;">
+
+    <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px; width: 100%; padding: 1em 0;">
+        <div style="flex: 1; min-width: 300px;">
+            <h3>Search Your Friends</h3>
+            <form method="POST" action="{{ url_for('friends') }}" style="width:100%;">
+                <input type="text" name="friend_search_query" placeholder="Search friends by name or username" value="{{ search_query }}" style="width:80%; max-width:400px;">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+    
+        <div style="flex: 1; min-width: 300px;">
+            <h3>Add Friend by User ID</h3>
+            <form method="POST" action="{{ url_for('friends') }}" style="width:100%; max-width:400px;">
+                <input type="text" name="search_userid" placeholder="Enter user ID" value="{{ search_userid }}" style="width:70%;">
+                <button type="submit">Add</button>
+            </form>
+        </div>
+        
+        <div style="flex: 1; min-width: 300px;">
+            <h3>Your User ID:</h3>
+            <div class="mb-3">
+                <input type="text" class="form-control d-inline-block w-auto" value="{{ my_user_id }}" id="my_user_id" readonly>
+                <button class="btn btn-outline-secondary" type="button" id="copy-link-btn">Click to Copy</button>
+            </div>
+        </div>
     </div>
-    <ul class="list-group mb-4" id="friends-list" style="max-height: 350px; overflow-y: auto;">
-        <li class="list-group-item d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center">
-                <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="Profile" class="rounded-circle me-2" width="40" height="40">
-                <span>John Doe</span>
-            </div>
-            <button class="btn btn-danger btn-sm">Remove</button>
-        </li>
-        <li class="list-group-item d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center">
-                <img src="https://randomuser.me/api/portraits/women/2.jpg" alt="Profile" class="rounded-circle me-2" width="40" height="40">
-                <span>Jane Smith</span>
-            </div>
-            <button class="btn btn-danger btn-sm">Remove</button>
-        </li>
-        <li class="list-group-item d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center">
-                <img src="https://randomuser.me/api/portraits/men/3.jpg" alt="Profile" class="rounded-circle me-2" width="40" height="40">
-                <span>Mike Johnson</span>
-            </div>
-            <button class="btn btn-danger btn-sm">Remove</button>
-        </li>
-        <li class="list-group-item d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center">
-                <img src="https://randomuser.me/api/portraits/women/4.jpg" alt="Profile" class="rounded-circle me-2" width="40" height="40">
-                <span>Emily Davis</span>
-            </div>
-            <button class="btn btn-danger btn-sm">Remove</button>
-        </li>
-        <li class="list-group-item d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center">
-                <img src="https://randomuser.me/api/portraits/men/5.jpg" alt="Profile" class="rounded-circle me-2" width="40" height="40">
-                <span>Chris Lee</span>
-            </div>
-            <button class="btn btn-danger btn-sm">Remove</button>
-        </li>
-        <li class="list-group-item d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center">
-                <img src="https://randomuser.me/api/portraits/women/6.jpg" alt="Profile" class="rounded-circle me-2" width="40" height="40">
-                <span>Sarah Kim</span>
-            </div>
-            <button class="btn btn-danger btn-sm">Remove</button>
-        </li>
-    </ul>
-    <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Paste friend link here..." id="add-friend-link">
-        <button class="btn btn-primary" type="button" id="add-friend-btn">Add Friend</button>
-    </div>
-    <div class="mb-3">
-        <input type="text" class="form-control d-inline-block w-auto" value="{{ your_friend_link }}" id="your-friend-link" readonly>
-        <button class="btn btn-outline-secondary" type="button" id="copy-link-btn">Copy Link</button>
-    </div>
+    
+    <script>
+        document.getElementById('copy-link-btn').onclick = function() {
+            let input = document.getElementById('my_user_id');
+            input.select();
+            input.setSelectionRange(0, 99999); 
+            document.execCommand('copy');
+        };
+    </script>
+    
+    {% if search_results %}
+        <h4>Search Results:</h4>
+        <div>
+            {% for user in search_results %}
+                <div style="display:flex;flex-direction:column;align-items:flex-start;justify-content:center;background:#f8f9fa;border-radius:8px;padding:1.5em 2em;margin-bottom:1.5em;width:100%;">
+                    <div style="display:flex;align-items:center;width:100%;">
+                        <img src="{{ url_for('static', filename=user.img_url or 'img/profile_pictures/default.png') }}" alt="Profile" style="width:48px;height:48px;border-radius:50%;margin-right:1em;">
+                        <div>
+                            <strong>{{ user.name or user.username }}</strong>
+                            <div style="font-size:small;color:#888;">User ID: {{ user.user_id }}</div>
+                        </div>
+                        <form method="POST" action="{{ url_for('friends') }}" style="margin-left:auto;">
+                            <input type="hidden" name="add_friend_id" value="{{ user.user_id }}">
+                            <button type="submit">Add Friend</button>
+                        </form>
+                    </div>
+                    <div style="margin-top:1em;font-size:small;color:#444;width:100%;">{{ user.bio or '' }}</div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <h2>Friends</h2>
+        <div>
+            {% for friend in friends %}
+                <div style="display:flex;flex-direction:column;align-items:flex-start;justify-content:center;background:#f8f9fa;border-radius:8px;padding:1.5em 2em;margin-bottom:1.5em;width:100%;">
+                    <div style="display:flex;align-items:center;width:100%;">
+                        <img src="{{ url_for('static', filename=friend.img_url or 'img/profile_pictures/default.png') }}" alt="Profile" style="width:48px;height:48px;border-radius:50%;margin-right:1em;">
+                        <div>
+                            <strong>{{ friend.name or friend.username }}</strong>
+                            <div style="font-size:small;color:#888;">User ID: {{ friend.user_id }}</div>
+                        </div>
+                        <form method="POST" action="{{ url_for('friends') }}" style="margin-left:auto;">
+                            <input type="hidden" name="remove_friend_id" value="{{ friend.user_id }}">
+                            <button type="submit" onclick="return confirm('Remove this friend?');">Remove</button>
+                        </form>
+                    </div>
+                    <div style="margin-top:1em;font-size:small;color:#444;width:100%;">{{ friend.bio or '' }}</div>
+                </div>
+            {% else %}
+                <div>YOU DON'T HAVE FRIENDS</div>
+                <div>ASK YOUR FRIENDS FOR THEIR USER ID</div>
+            {% endfor %}
+        </div>
+    {% endif %}
 </div>
-<script>
-document.getElementById('friend-search').addEventListener('input', function() {
-    let filter = this.value.toLowerCase();
-    let items = document.querySelectorAll('#friends-list li');
-    items.forEach(function(item) {
-        let name = item.querySelector('span').textContent.toLowerCase();
-        item.style.display = name.includes(filter) ? '' : 'none';
-    });
-});
-document.getElementById('copy-link-btn').onclick = function() {
-    let input = document.getElementById('your-friend-link');
-    input.select();
-    document.execCommand('copy');
-};
-</script>
 {% endblock %}
